@@ -80,13 +80,6 @@ Want to contribute? Fork the repository and join the project!
 
 ---
 
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
 ## 🛠️ Developer Notes
 - The app uses Local Storage for data persistence, ensuring user data is retained across sessions.
 - Designed for educational purposes and can be extended further.
