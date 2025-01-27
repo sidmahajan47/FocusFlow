@@ -58,26 +58,28 @@ Make sure you have a modern web browser installed (e.g., Chrome, Firefox, or Edg
 
 ---
 
- ## 📱 Contact
+
+
+## 📱 Contact
 
 If you have any questions, suggestions, or feedback, feel free to reach out:
 
-- **Email**: [akshadadevkar8@gmail.com](mailto:akshadadevkar8@gmail.com)
-- **GitHub**: [AkshadaDev](https://github.com/AkshadaDev)
-- **LinkedIn**: [Akshada Devkar](www.linkedin.com/in/akshadadevkar)
-  
+- **Email**: [sidmahajan47@gmail.com](mailto:sidmahajan47@gmail.com)
+- **GitHub**: [sidmahajan47](https://github.com/sidmahajan47)
+- **LinkedIn**: [Siddhesh Mahajan](https://www.linkedin.com/in/siddheshmahajan47/)
+
 ---
 
-## 👥 Contributors
 
-We thank the following contributors for their support:
+## 💻 This repository is a replica of the original repository created by AkshadaDev. Here are their details:
 
-- **[Siddhesh Mahajan](https://github.com/AkshadaDev)** - [Linkdln]
-- **[@sidmhajan47](https://github.com/sidmahajan47)** - [Github]
+- [AkshadaDev](https://github.com/AkshadaDev) [Github]
+- [Akshada Devkar](https://www.linkedin.com/in/akshadadevkar/) [Linkdln]
 
 Want to contribute? Fork the repository and join the project!
 
 ---
+
 
 ## 📄 License
 
