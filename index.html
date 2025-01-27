@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> FocusFlow </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
+    </svg>
+  </button>
+
+  <div class="w-full max-w-lg bg-[var(--card-bg)] rounded-2xl shadow-2xl p-6 border-2 border-[var(--border-color)]">
+    <h1 class="text-center text-3xl font-bold text-[var(--accent-primary)] mb-6 hover:text-[var(--accent-secondary)] transition-colors duration-300 neon-text"> FocusFlow </h1>
+
+    <!-- Task Input Form -->
+    <form id="task-form" class="flex space-x-3 mb-6">
+      <input
+        type="text"
+        id="task-input"
+        placeholder="Add a new task..."
+        class="task-input flex-grow border-2 border-[var(--border-color)] rounded-lg px-4 py-2 text-sm placeholder-gray-500 focus:outline-none"
+        />
+        <button
+        type="submit"
+        class="custom-button bg-[var(--accent-primary)] text-[var(--text-primary)] px-4 py-2 rounded-lg font-semibold hover:bg-[var(--accent-secondary)] transition-all duration-300"
+      >
+        Add
+      </button>
+    </form>
+
+    <!-- Task List -->
+    <ul id="task-list" class="space-y-4 mb-6"></ul>
+
+    <!-- Pomodoro Timer Section -->
+    <div class="pomodoro-section bg-[var(--timer-bg)] rounded-xl border-2 border-[var(--border-color)] p-6">
+      <h2 class="text-[var(--accent-primary)] text-xl font-semibold mb-4 neon-text text-center">Pomodoro Timer</h2>
+      
+      <!-- Timer Display -->
+      <div class="timer-container bg-[var(--card-bg)] rounded-lg p-6 mb-4">
+      <div class="timer-display text-center">
+        <span id="timer" class="text-4xl font-bold text-[var(--accent-primary)]">25:00</span>
+        <span id="interval-type" class="text-[var(--accent-secondary)] ml-2">(Work)</span>
+        </div>
+        
+        <!-- Timer Controls -->
+        <div class="flex justify-center space-x-4 mt-4">
+            <button id="startTimer" class="custom-button bg-[var(--accent-primary)] text-[var(--text-primary)] px-6 py-2 rounded-lg font-semibold">
+            Start
+            </button>
+            <button id="resetTimer" class="custom-button bg-[#FF007F] text-[var(--text-primary)] px-6 py-2 rounded-lg font-semibold">
+            Reset
+            </button>
+        </div>
+      </div>
+
+      <!-- Session Info -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-[var(--card-bg)] p-4 rounded-lg text-center">
+          <p class="text-[var(--accent-secondary)] text-sm mb-1">Completed Sessions</p>
+          <p id="completedCount" class="text-[var(--text-primary)] text-lg font-bold">0</p>
+        </div>
+        <div class="bg-[var(--card-bg)] p-4 rounded-lg text-center">
+          <p class="text-[var(--accent-secondary)] text-sm mb-1">Total Focus Time</p>
+          <p id="totalTime" class="text-[var(--text-primary)] text-lg font-bold">0 mins</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const taskForm = document.getElementById("task-form");
+    const taskInput = document.getElementById("task-input");
+    const taskList = document.getElementById("task-list");
+
+    // Initialize tasks array from localStorage or empty array if none exists
+    let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    let nextId = parseInt(localStorage.getItem('nextId') || '1');
+
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      localStorage.setItem('nextId', nextId.toString());
+    }
+
+    function fetchTasks() {
+      taskList.innerHTML = "";
+      tasks.forEach(task => renderTask(task));
+    }
+
+    function addTask(text) {
+      const newTask = {
+        id: nextId++,
+        text: text,
+        completed: false
+      };
+      tasks.push(newTask);
+      saveTasks();
+      renderTask(newTask);
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(task => task.id !== id);
+      saveTasks();
+      document.getElementById(`task-${id}`).remove();
+    }
+
+    function toggleTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (task) {
+        task.completed = !task.completed;
+        saveTasks();
+        const taskItem = document.getElementById(`task-${id}`);
+        const taskText = taskItem.querySelector(".task-text");
+        taskText.classList.toggle("line-through", task.completed);
+        taskText.classList.toggle("text-[#4A4A4A]", task.completed);
+      }
+    }
+
+    function renderTask(task) {
+      const taskItem = document.createElement("li");
+      taskItem.id = `task-${task.id}`;
+      taskItem.className =
+        "task-item flex justify-between items-center bg-[#1F1F1F] rounded-lg p-4 shadow-md";
+
+      const taskText = document.createElement("span");
+      taskText.textContent = task.text;
+      taskText.className = `task-text text-white ${task.completed ? "line-through text-[#4A4A4A]" : ""}`;
+
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "space-x-3";
+
+      const toggleButton = document.createElement("button");
+      toggleButton.textContent = task.completed ? "Undo" : "Complete";
+      toggleButton.className =
+        "custom-button bg-[#00FF88] text-[#0A0A0A] px-3 py-1 rounded-lg font-semibold hover:bg-[#00CCFF] transition-all duration-300";
+      toggleButton.onclick = () => toggleTask(task.id);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.className =
+        "custom-button bg-[#FF007F] text-white px-3 py-1 rounded-lg font-semibold hover:bg-[#00CCFF] transition-all duration-300";
+      deleteButton.onclick = () => deleteTask(task.id);
+
+      buttonContainer.appendChild(toggleButton);
+      buttonContainer.appendChild(deleteButton);
+
+      taskItem.appendChild(taskText);
+      taskItem.appendChild(buttonContainer);
+      taskList.appendChild(taskItem);
+    }
+
+    taskForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const text = taskInput.value.trim();
+      if (text) {
+        addTask(text);
+        taskInput.value = "";
+      }
+    });
+
+    // Load tasks when page loads
+    fetchTasks();
+
+    // Pomodoro Timer Logic
+    let isTimerRunning = false;
+    let timerInterval = null;
+    let workDuration = 25 * 60; // 25 minutes in seconds
+    let breakDuration = 5 * 60; // 5 minutes in seconds
+    let timeRemaining = workDuration;
+    let isWorkInterval = true;
+    let completedPomodoros = 0;
+    let totalFocusTime = 0;
+
+    const startButton = document.getElementById("startTimer");
+    const resetButton = document.getElementById("resetTimer");
+    const timerDisplay = document.getElementById("timer");
+    const intervalTypeDisplay = document.getElementById("interval-type");
+    const completedCountDisplay = document.getElementById("completedCount");
+    const totalTimeDisplay = document.getElementById("totalTime");
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimer() {
+      if (timeRemaining > 0) {
+        timeRemaining--;
+        timerDisplay.textContent = formatTime(timeRemaining);
+      } else {
+        // Play notification sound
+        const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+        audio.play();
+
+        if (isWorkInterval) {
+          completedPomodoros++;
+          totalFocusTime += 25;
+          completedCountDisplay.textContent = completedPomodoros;
+          totalTimeDisplay.textContent = `${totalFocusTime} mins`;
+          timeRemaining = breakDuration;
+          intervalTypeDisplay.textContent = "(Break)";
+            document.body.style.backgroundColor = "var(--bg-primary)"; // Break color handled by CSS
+          } else {
+            timeRemaining = workDuration;
+            intervalTypeDisplay.textContent = "(Work)";
+            document.body.style.backgroundColor = "var(--bg-primary)"; // Original color handled by CSS
+        }
+        isWorkInterval = !isWorkInterval;
+      }
+    }
+
+    startButton.addEventListener("click", () => {
+      if (!isTimerRunning) {
+        isTimerRunning = true;
+        startButton.textContent = "Pause";
+        timerInterval = setInterval(updateTimer, 1000);
+      } else {
+        isTimerRunning = false;
+        startButton.textContent = "Start";
+        clearInterval(timerInterval);
+      }
+    });
+
+    resetButton.addEventListener("click", () => {
+      isTimerRunning = false;
+      clearInterval(timerInterval);
+      timeRemaining = workDuration;
+      isWorkInterval = true;
+      startButton.textContent = "Start";
+      timerDisplay.textContent = formatTime(workDuration);
+      intervalTypeDisplay.textContent = "(Work)";
+        document.body.style.backgroundColor = "var(--bg-primary)";
+    });
+
+    // Save timer state to localStorage
+    function saveTimerState() {
+      const timerState = {
+        completedPomodoros,
+        totalFocusTime
+      };
+      localStorage.setItem('timerState', JSON.stringify(timerState));
+    }
+
+    // Load timer state from localStorage
+    function loadTimerState() {
+      const savedState = localStorage.getItem('timerState');
+      if (savedState) {
+        const { completedPomodoros: saved_completedPomodoros, totalFocusTime: saved_totalFocusTime } = JSON.parse(savedState);
+        completedPomodoros = saved_completedPomodoros;
+        totalFocusTime = saved_totalFocusTime;
+        completedCountDisplay.textContent = completedPomodoros;
+        totalTimeDisplay.textContent = `${totalFocusTime} mins`;
+      }
+    }
+
+    // Load timer state when page loads
+    loadTimerState();
+
+    // Save timer state when window is closed
+    window.addEventListener('beforeunload', saveTimerState);
+    </script>
+
+    <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Load saved theme or use system preference
+    const currentTheme = localStorage.getItem('theme') || 
+      (prefersDarkScheme.matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+    </script>
+  </body>
+</html>

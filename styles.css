@@ -1,0 +1,118 @@
+:root {
+  --bg-primary: #0A0A0A;
+  --text-primary: #FFFFFF;
+  --accent-primary: #00FF88;
+  --accent-secondary: #00CCFF;
+  --border-color: #4A4A4A;
+  --card-bg: #1F1F1F;
+  --timer-bg: #2A2A2A;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f5f5f5;
+  --text-primary: #0A0A0A;
+  --accent-primary: #00994d;
+  --accent-secondary: #0077cc;
+  --border-color: #e0e0e0;
+  --card-bg: #ffffff;
+  --timer-bg: #f0f0f0;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.theme-toggle svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: var(--accent-primary);
+}
+
+.task-item {
+  transition: all 0.3s ease;
+  border: 2px solid var(--border-color);
+  background: var(--card-bg);
+}
+
+.task-item:hover {
+  transform: translateX(8px);
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+}
+
+.custom-button {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+.task-input {
+  transition: all 0.3s ease;
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.task-input:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+  border-color: var(--accent-secondary);
+}
+
+.neon-text {
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.pomodoro-section {
+  background: var(--timer-bg) !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .w-full.max-w-lg {
+    margin: 1rem;
+    min-height: calc(100vh - 2rem);
+  }
+
+  .task-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .task-item .space-x-3 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #task-form {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  #task-form button {
+    width: 100%;
+  }
+
+  .grid.grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
