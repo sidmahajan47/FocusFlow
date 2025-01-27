@@ -46,7 +46,7 @@ Make sure you have a modern web browser installed (e.g., Chrome, Firefox, or Edg
 ### Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/FocusFlow.git
+   git clone https://github.com/sidmahajan47/FocusFlow.git
    ```
 
 2. Navigate to the project directory:
