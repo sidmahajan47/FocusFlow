@@ -12,7 +12,7 @@
   <script src="audio.js" defer></script>
 </head>
 <body>
-  <!-- Sidebar with music controls -->
+  
   <aside class="sidebar-controls" title="Music controls">
     <button id="music-toggle" class="music-toggle" aria-label="Toggle background music">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="music-icon">
@@ -24,7 +24,7 @@
       value="0.5" aria-label="Music volume control">
   </aside>
 
-  <!-- Main content -->
+
   <main class="main-container min-h-screen flex items-center justify-center p-4">
     <div class="theme-toggle-wrapper" title="Toggle dark/light mode">
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
@@ -234,11 +234,11 @@
           totalTimeDisplay.textContent = `${totalFocusTime} mins`;
           timeRemaining = breakDuration;
           intervalTypeDisplay.textContent = "(Break)";
-            document.body.style.backgroundColor = "var(--bg-primary)"; // Break color handled by CSS
+            document.body.style.backgroundColor = "var(--bg-primary)"; 
           } else {
             timeRemaining = workDuration;
             intervalTypeDisplay.textContent = "(Work)";
-            document.body.style.backgroundColor = "var(--bg-primary)"; // Original color handled by CSS
+            document.body.style.backgroundColor = "var(--bg-primary)"; 
         }
         isWorkInterval = !isWorkInterval;
       }
@@ -311,14 +311,14 @@
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       
-      // Add transition class to body
+   
       document.body.style.transition = 'background 0.5s ease';
       setTimeout(() => {
       document.body.style.transition = '';
       }, 500);
     });
 
-    // Listen for system theme changes
+
     prefersDarkScheme.addEventListener('change', (e) => {
       const newTheme = e.matches ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', newTheme);
@@ -328,7 +328,7 @@
     
     <script src="particles.js"></script>
     <script>
-      // Particle toggle functionality
+   
       const particleToggle = document.getElementById('particle-toggle');
       particleToggle.addEventListener('click', () => {
       const newState = !window.particleEffect.isEnabled;
@@ -336,12 +336,12 @@
       particleToggle.classList.toggle('active', newState);
       });
       
-        // Set initial state
+       
         particleToggle.classList.toggle('active', window.particleEffect.isEnabled);
       </script>
 
         <script>
-          // Music control functionality
+   
           const musicToggle = document.getElementById('music-toggle');
           const volumeSlider = document.getElementById('volume-slider');
 
@@ -354,7 +354,6 @@
           window.audioPlayer.setVolume(e.target.value);
           });
 
-          // Set initial volume
           volumeSlider.value = window.audioPlayer.volume;
         </script>
 
